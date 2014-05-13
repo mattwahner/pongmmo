@@ -6,11 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Pong extends Canvas implements Runnable {
@@ -27,8 +23,6 @@ public class Pong extends Canvas implements Runnable {
 	private Level level;
 	private Screen screen;
 	
-	private BufferedImage img = null;
-
 	public void start(){
 		running = true;
 		new Thread(this).run();
@@ -87,11 +81,6 @@ public class Pong extends Canvas implements Runnable {
 	}
 	
 	private void init(){
-		try {
-			img = ImageIO.read(new File("res/pong.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);
 		level = new Level(this, keyHandler);
@@ -114,9 +103,8 @@ public class Pong extends Canvas implements Runnable {
 		}
 		
 		Graphics g = bs.getDrawGraphics();
-		g.setColor(Color.GRAY);
+		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(img, 0, 0, null);
 		if(level != null)
 			level.render(g);
 		else
