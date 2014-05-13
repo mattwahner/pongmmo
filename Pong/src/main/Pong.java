@@ -22,6 +22,7 @@ public class Pong extends Canvas implements Runnable {
 	
 	private Level level;
 	private Screen screen;
+	private Resources res;
 	
 	public void start(){
 		running = true;
@@ -81,6 +82,7 @@ public class Pong extends Canvas implements Runnable {
 	}
 	
 	private void init(){
+		res = new Resources();
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);
 		level = new Level(this, keyHandler);
