@@ -54,13 +54,13 @@ public class MainScreen implements Screen {
 	public void render(Graphics g){
 		switch(state){
 		case START_STATE:
-			g.drawImage(res.pongTitleScreen, 0, 0, null);
+			g.drawImage(res.mainMenu.getImageByIndex(0), 0, 0, null);
 			break;
 		case NEW_GAME_STATE:
-			g.drawImage(res.pongMainScreenNewGame, 0, 0, null);
+			g.drawImage(res.mainMenu.getImageByIndex(1), 0, 0, null);
 			break;
 		case EXIT_STATE:
-			g.drawImage(res.pongMainScreenExit, 0, 0, null);
+			g.drawImage(res.mainMenu.getImageByIndex(2), 0, 0, null);
 			break;
 		default:
 			break;

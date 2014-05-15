@@ -31,13 +31,13 @@ public class KeyHandler implements KeyListener {
 	}
 	
 	private ArrayList<Key> keys = new ArrayList<Key>();
-	public Key w = new Key(87);
-	public Key s = new Key(83);
-	public Key c = new Key(67);
-	public Key e = new Key(69);
-	public Key upArrow = new Key(38);
-	public Key downArrow = new Key(40);
-	public Key space = new Key(32);
+	public final Key w = new Key(87);
+	public final Key s = new Key(83);
+	public final Key c = new Key(67);
+	public final Key e = new Key(69);
+	public final Key upArrow = new Key(38);
+	public final Key downArrow = new Key(40);
+	public final Key space = new Key(32);
 	
 	public KeyHandler(){
 		keys.add(w);
