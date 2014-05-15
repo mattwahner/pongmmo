@@ -18,10 +18,11 @@ public class MainScreen implements Screen {
 		this.pong = pong;
 		this.keyHandler = keyHandler;
 		this.res = res;
-		state = 0;
 	}
 	
-	public void init(){}
+	public void init(){
+		state = 0;
+	}
 	
 	public void tick(){
 		switch(state){
