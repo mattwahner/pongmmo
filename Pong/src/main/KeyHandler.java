@@ -49,8 +49,13 @@ public class KeyHandler implements KeyListener {
 		keys.add(space);
 	}
 	
+	public void releaseKeys(){
+		for(Key k : keys){
+			k.pressed = false;
+		}
+	}
+	
 	public void keyPressed(KeyEvent ke) {
-		System.out.println(ke.getKeyCode());
 		for(Key k : keys){
 			if(ke.getKeyCode() == k.getKeyCode()){
 				k.setPressed(true);

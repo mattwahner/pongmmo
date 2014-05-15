@@ -8,11 +8,16 @@ import javax.imageio.ImageIO;
 
 public class Resources {
 	
-	public BufferedImage pong = null;
+	public BufferedImage pongTitleScreen = null;
+	public BufferedImage pongMainScreenNewGame = null;
+	public BufferedImage pongMainScreenExit = null;
 	
 	public Resources(){
 		try {
-			pong = ImageIO.read(new File("res/pong.png"));
+			BufferedImage pong = ImageIO.read(new File("res/pong.png"));
+			pongTitleScreen = pong.getSubimage(0, 0, 1024, 768);
+			pongMainScreenNewGame = pong.getSubimage(1024, 0, 1024, 768);
+			pongMainScreenExit = pong.getSubimage(2048, 0, 1024, 768);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
