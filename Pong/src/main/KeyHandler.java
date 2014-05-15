@@ -37,6 +37,7 @@ public class KeyHandler implements KeyListener {
 	public Key e = new Key(69);
 	public Key upArrow = new Key(38);
 	public Key downArrow = new Key(40);
+	public Key space = new Key(32);
 	
 	public KeyHandler(){
 		keys.add(w);
@@ -45,9 +46,11 @@ public class KeyHandler implements KeyListener {
 		keys.add(e);
 		keys.add(upArrow);
 		keys.add(downArrow);
+		keys.add(space);
 	}
 	
 	public void keyPressed(KeyEvent ke) {
+		System.out.println(ke.getKeyCode());
 		for(Key k : keys){
 			if(ke.getKeyCode() == k.getKeyCode()){
 				k.setPressed(true);

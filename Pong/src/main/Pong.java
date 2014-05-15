@@ -71,7 +71,7 @@ public class Pong extends Canvas implements Runnable {
 	}
 	
 	public void gameOver(){
-		screen = new Screen(this, keyHandler);
+		screen = new GameOverScreen(this, keyHandler);
 		level = null;
 	}
 	
@@ -85,8 +85,8 @@ public class Pong extends Canvas implements Runnable {
 		res = new Resources();
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);
-		level = new Level(this, keyHandler);
-		level.init();
+		screen = new MainScreen(this, keyHandler, res);
+		level = null;
 	}
 	
 	private void tick(){
