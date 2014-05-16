@@ -16,9 +16,9 @@ public class Test {
 			echoSocket = new Socket("127.0.0.1", 7777);
 			out = new PrintWriter(echoSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Connection established");
 			String userInput;
-			while((userInput = stdIn.readLine()) != null){
+			while((userInput = in.readLine()) != null){
 				out.println(userInput);
 				System.out.println("echo: " + in.readLine());
 			}

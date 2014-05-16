@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ServerTest {
 	
@@ -18,13 +17,14 @@ public class ServerTest {
 			System.out.println("Connection accepted");
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			String outputLine;
-			outputLine = "Test";
-			while(true){
-				out.println(outputLine);
-				System.out.println(in.readLine());
-				Scanner scan = new Scanner(System.in);
-				outputLine = scan.nextLine();
+			System.out.println("Connection established");
+			out.println("test");
+			System.out.println("First packet sent");
+			String inputLine;
+			while((inputLine = in.readLine()) != null){
+				System.out.println(inputLine);
+				out.println("test");
+				System.out.println("Packet sent");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
