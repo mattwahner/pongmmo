@@ -20,10 +20,11 @@ public class ServerTest implements Runnable{
 			System.out.println("Server started");
 			Socket clientSocket = serverSocket.accept();
 			System.out.println("Connection accepted");
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
+			out = new PrintWriter(clientSocket.getOutputStream(), false);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			System.out.println("Connection established");
 			out.println("test");
+			out.flush();
 			System.out.println("First packet sent");
 			new ServerTest().start();
 			System.out.println("Exited while");
@@ -40,16 +41,19 @@ public class ServerTest implements Runnable{
 
 	public void run() {
 		while(running){
-			out.println("test");
-			System.out.println("Packet sent");
 			String inLine;
 			try {
+				System.out.println("waiting for recv");
 				if((inLine = in.readLine()) != null){
 					System.out.println("Recieved: " + inLine);
 				}
+				System.out.println("recv complete");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			out.println("test");
+			out.flush();
+			System.out.println("Packet sent");
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {

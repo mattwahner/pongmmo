@@ -16,7 +16,7 @@ public class Test implements Runnable{
 		Socket echoSocket;
 		try {
 			echoSocket = new Socket("127.0.0.1", 7777);
-			out = new PrintWriter(echoSocket.getOutputStream(), true);
+			out = new PrintWriter(echoSocket.getOutputStream(), false);
 			in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 			System.out.println("Connection established");
 			new Test().start();
@@ -36,6 +36,7 @@ public class Test implements Runnable{
 			try {
 				if((userInput = in.readLine()) != null){
 					out.println(userInput);
+					out.flush();
 					System.out.println("echo: " + in.readLine());
 				}
 			} catch (IOException e) {
