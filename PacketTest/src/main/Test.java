@@ -37,7 +37,7 @@ public class Test implements Runnable{
 				if((userInput = in.readLine()) != null){
 					out.println(userInput);
 					out.flush();
-					System.out.println("echo: " + in.readLine());
+					System.out.println("echo: " + userInput);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
