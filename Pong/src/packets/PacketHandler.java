@@ -60,6 +60,12 @@ public class PacketHandler implements Runnable {
 				while(in.ready()){
 					String[] inputSlice = in.readLine().split("|");
 					int id = Integer.parseInt(inputSlice[0]);
+					try {
+						Packet newPacket = packet.getPacketList().get(id++).getClass().newInstance();
+					} catch (InstantiationException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
+					
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
