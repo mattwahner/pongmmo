@@ -7,7 +7,7 @@ public class Packet {
 	private ArrayList<Packet> packets = new ArrayList<Packet>();
 	
 	public Packet(){
-		
+		packets.add(new Packet01Handshake());
 	}
 	
 	public ArrayList<Packet> getPacketList(){

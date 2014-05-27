@@ -9,6 +9,9 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import packets.Packet01Handshake;
+import packets.PacketHandler;
+
 public class Pong extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 8484419508934349888L;
@@ -82,6 +85,13 @@ public class Pong extends Canvas implements Runnable {
 	}
 	
 	private void init(){
+		System.out.println("Starting server");
+		PacketHandler packetHandler1 = new PacketHandler(7777);
+		packetHandler1.start();
+		System.out.println("Starting client");
+		PacketHandler packetHandler2 = new PacketHandler("127.0.0.1", 7777);
+		packetHandler2.start();
+		packetHandler1.addPacketToQue(new Packet01Handshake());
 		res = new Resources();
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);
