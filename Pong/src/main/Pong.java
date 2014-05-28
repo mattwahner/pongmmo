@@ -9,8 +9,10 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import packets.Packet01Handshake;
-import packets.PacketHandler;
+import network.NetClientHandler;
+import network.NetHandler;
+import network.NetServerHandler;
+import network.Packet01Handshake;
 
 public class Pong extends Canvas implements Runnable {
 
@@ -85,13 +87,21 @@ public class Pong extends Canvas implements Runnable {
 	}
 	
 	private void init(){
-		System.out.println("Starting server");
-		PacketHandler packetHandler1 = new PacketHandler(7777);
-		packetHandler1.start();
-		System.out.println("Starting client");
-		PacketHandler packetHandler2 = new PacketHandler("127.0.0.1", 7777);
-		packetHandler2.start();
-		packetHandler1.addPacketToQue(new Packet01Handshake());
+		NetServerHandler serverTest = new NetServerHandler(7777);
+		NetClientHandler test = new NetClientHandler("127.0.0.1", 7777);
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		serverTest.updateConnections();
+		serverTest.handleTest(new Packet01Handshake("test", 123));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(test.getRecvListPackets());
 		res = new Resources();
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);

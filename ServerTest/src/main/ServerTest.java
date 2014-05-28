@@ -51,9 +51,6 @@ public class ServerTest implements Runnable{
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			out.println("test");
-			out.flush();
-			System.out.println("Packet sent");
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
