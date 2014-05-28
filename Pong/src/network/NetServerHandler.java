@@ -29,11 +29,9 @@ public class NetServerHandler extends NetHandler {
 		return allPackets;
 	}
 	
-	public void handleTest(Packet01Handshake packet) {
-		System.out.println("Prepping packets");
+	public void handleTest(String test, int i) {
 		for(TcpConnection c : connections){
-			System.out.println("Sending packet");
-			c.addToSendQue(packet);
+			c.addToSendQue(new Packet01Handshake(test, i));
 		}
 	}
 	

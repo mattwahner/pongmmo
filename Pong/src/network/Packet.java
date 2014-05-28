@@ -24,11 +24,8 @@ public abstract class Packet {
 		Packet packet = null;
 		try {
 			String data = br.readLine();
-			String[] dataSplit = data.split("|");
-			packet = getNewPacket(Integer.parseInt(dataSplit[0]));
-			String dataFormatted = dataSplit[1];
-			for(int i = 0; i < dataSplit.length - 2; i++) dataFormatted += dataSplit[i + 2];
-			packet.readPacketData(dataFormatted);
+			packet = getNewPacket(Integer.parseInt(data.split("~")[0]));
+			packet.readPacketData(data);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

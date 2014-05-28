@@ -10,11 +10,13 @@ public class TcpReadThread extends Thread {
 	}
 	
 	public void run(){
-		if(!TcpConnection.readNetworkPacket(tc)){
-			try {
-				sleep(2L);
-			} catch (InterruptedException e) {
-				;
+		while(true){
+			if(!TcpConnection.readNetworkPacket(tc)){
+				try {
+					sleep(2L);
+				} catch (InterruptedException e) {
+					;
+				}
 			}
 		}
 	}

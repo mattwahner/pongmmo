@@ -38,17 +38,14 @@ public class TcpConnection {
 	
 	public ArrayList<Packet> getRecvList(){
 		ArrayList<Packet> tempList = new ArrayList<Packet>(recvQue);
-		System.out.println(recvQue);
 		recvQue.clear();
 		return tempList;
 	}
 	
 	public boolean readPacket(){
-		System.out.println("Reading packets");
 		try {
 			if(br.ready()){
 				recvQue.add(Packet.readPacket(br));
-				System.out.println("Packet read");
 				return true;
 			}
 		} catch (IOException e) {
@@ -60,7 +57,6 @@ public class TcpConnection {
 	public boolean sendPacket(){
 		if(sendQue.size() > 0){
 			sendQue.remove(0).writePacketData(pw);
-			System.out.println("Packet sent");
 			return true;
 		}
 		return false;

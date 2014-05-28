@@ -15,14 +15,14 @@ public class Packet01Handshake extends Packet {
 	}
 	
 	public void writePacketData(PrintWriter pw) {
-		String data = test + "|" + test2;
+		String data = 1 + "~" + test + "~" + test2;
 		pw.println(data);
 	}
 
 	public void readPacketData(String s) {
-		String[] dataSplit = s.split("|");
-		test = dataSplit[0];
-		test2 = Integer.parseInt(dataSplit[1]);
+		String[] dataSplit = s.split("~");
+		test = dataSplit[1];
+		test2 = Integer.parseInt(dataSplit[2]);
 	}
 	
 	public String getTest(){
@@ -31,6 +31,10 @@ public class Packet01Handshake extends Packet {
 	
 	public int getTest2(){
 		return test2;
+	}
+	
+	public String toString(){
+		return "Packet01Handshake";
 	}
 	
 }

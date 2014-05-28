@@ -21,8 +21,8 @@ public class NetClientHandler extends NetHandler {
 		return connection.getRecvList();
 	}
 	
-	public void handleTest(Packet01Handshake packet) {
-		connection.addToSendQue(new Packet01Handshake("asdf", 123));
+	public void handleTest(String test, int i) {
+		connection.addToSendQue(new Packet01Handshake(test, i));
 	}
 	
 }

@@ -10,11 +10,13 @@ public class TcpWriteThread extends Thread {
 	}
 	
 	public void run(){
-		if(!TcpConnection.sendNetworkPacket(tc)){
-			try {
-				sleep(2L);
-			} catch (InterruptedException e) {
-				;
+		while(true){
+			if(!TcpConnection.sendNetworkPacket(tc)){
+				try {
+					sleep(2L);
+				} catch (InterruptedException e) {
+					;
+				}
 			}
 		}
 	}
