@@ -3,6 +3,7 @@ package network;
 public class TcpReadThread extends Thread {
 
 	private TcpConnection tc;
+	private volatile boolean running = true;
 	
 	public TcpReadThread(TcpConnection tc, String threadString){
 		super(threadString);
@@ -10,7 +11,7 @@ public class TcpReadThread extends Thread {
 	}
 	
 	public void run(){
-		while(true){
+		while(running){
 			if(!TcpConnection.readNetworkPacket(tc)){
 				try {
 					sleep(2L);
@@ -19,6 +20,10 @@ public class TcpReadThread extends Thread {
 				}
 			}
 		}
+	}
+	
+	public void terminate(){
+		running = false;
 	}
 	
 }

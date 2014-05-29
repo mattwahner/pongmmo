@@ -3,36 +3,19 @@ package network;
 import java.util.ArrayList;
 
 public class NetServerHandler extends NetHandler {
-
-	private PongServer pongServer;
 	
-	private ArrayList<TcpConnection> connections = new ArrayList<TcpConnection>();
+	private TcpConnection tc;
 	
-	public NetServerHandler(int port){
-		pongServer = new PongServer(port);
-	}
-	
-	public void updateConnections(){
-		connections = pongServer.getConnections();
+	public NetServerHandler(TcpConnection tc){
+		this.tc = tc;
 	}
 	
 	public ArrayList<Packet> getRecvListPackets(){
-		ArrayList<Packet> allPackets = new ArrayList<Packet>();
-		for(TcpConnection c : connections){
-			allPackets.addAll(c.getRecvList());
-		}
-		for(Packet p : allPackets){
-			for(TcpConnection c : connections){
-				c.addToSendQue(p);
-			}
-		}
-		return allPackets;
+		return tc.getRecvList(true);
 	}
 	
 	public void handleTest(String test, int i) {
-		for(TcpConnection c : connections){
-			c.addToSendQue(new Packet01Handshake(test, i));
-		}
+		tc.addToSendQue(new Packet01Handshake(test, i));
 	}
 	
 }

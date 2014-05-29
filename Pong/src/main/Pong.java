@@ -10,8 +10,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import network.NetClientHandler;
-import network.NetServerHandler;
-import network.Packet01Handshake;
+import network.PongServer;
 
 public class Pong extends Canvas implements Runnable {
 
@@ -86,28 +85,21 @@ public class Pong extends Canvas implements Runnable {
 	}
 	
 	private void init(){
-		NetServerHandler serverTest = new NetServerHandler(7777);
-		NetClientHandler test = new NetClientHandler("127.0.0.1", 7777);
+		PongServer server = new PongServer(7777);
+		NetClientHandler nch = new NetClientHandler("127.0.0.1", 7777);
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		serverTest.updateConnections();
-		serverTest.handleTest("server", 123);
-		test.handleTest("client", 123);
+		nch.handleTest("test", 123);
 		try {
 			Thread.sleep(100);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		System.out.println(serverTest.getRecvListPackets());
-		System.out.println(test.getRecvListPackets());
-		try{
-			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println(nch.getRecvListPackets());
+		System.out.println(server.getPlayers().get(0).getConnection().getRecvList(true));
 		res = new Resources();
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);

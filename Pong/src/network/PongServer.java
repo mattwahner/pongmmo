@@ -7,12 +7,13 @@ import java.util.ArrayList;
 
 public class PongServer {
 
-	private int clientCount = 0;
+	private static int clientCount = 0;
 	
 	private ServerSocket server;
-	private PongServerThread pongServerThread;
+	private ServerListenThread pongServerThread;
+	private ServerPacketThread serverPacketThread;
 	
-	private ArrayList<TcpConnection> connections = new ArrayList<TcpConnection>();
+	private ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 	
 	public PongServer(int port){
 		try {
@@ -21,18 +22,20 @@ public class PongServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		pongServerThread = new PongServerThread(this, port + " thread");
+		pongServerThread = new ServerListenThread(this, port + " listen thread");
 		pongServerThread.start();
+		serverPacketThread = new ServerPacketThread(this, port + " packet thread");
+		serverPacketThread.start();
 	}
 	
-	public ArrayList<TcpConnection> getConnections(){
-		return connections;
+	public ArrayList<NetworkPlayer> getPlayers(){
+		return players;
 	}
-	
+		
 	public void acceptConnection(){
 		try {
 			Socket clientSocket = server.accept();
-			connections.add(new TcpConnection(clientSocket, String.valueOf(clientCount)));
+			players.add(new NetworkPlayer(new TcpConnection(clientSocket, String.valueOf(clientCount))));
 			clientCount++;
 		} catch (IOException e){
 			;
@@ -40,9 +43,23 @@ public class PongServer {
 	}
 	
 	public void checkConnections(){
-		ArrayList<TcpConnection> tempList = new ArrayList<TcpConnection>(connections);
-		for(TcpConnection tc : tempList){
-			if(tc.getIsClosed()) connections.remove(tc);
+		ArrayList<NetworkPlayer> tempList = new ArrayList<NetworkPlayer>(players);
+		for(NetworkPlayer p : tempList){
+			if(p.getConnection().getIsClosed()){
+				p.getConnection().shutdownConnection();
+				players.remove(p);
+			}
+		}
+	}
+	
+	public void redirectPackets(){
+		ArrayList<Packet> outstandingPackets = new ArrayList<Packet>();
+		for(NetworkPlayer p : players){
+			outstandingPackets.addAll(p.getConnection().getRecvList(false));
+		}
+		for(NetworkPlayer player : players){
+			TcpConnection tc = player.getConnection();
+			for(Packet p : outstandingPackets) tc.addToSendQue(p);
 		}
 	}
 	
@@ -51,7 +68,11 @@ public class PongServer {
 	}
 	
 	static void checkNetworkConnections(PongServer server){
-		server.checkConnections();
+		server.acceptConnection();
+	}
+	
+	static void redirectNetworkPackets(PongServer server){
+		server.redirectPackets();
 	}
 	
 }

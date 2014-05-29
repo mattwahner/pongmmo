@@ -15,8 +15,8 @@ public class TcpConnection {
 	
 	private ArrayList<Packet> sendQue = new ArrayList<Packet>();
 	private ArrayList<Packet> recvQue = new ArrayList<Packet>();
-	private Thread readThread;
-	private Thread writeThread;
+	private TcpReadThread readThread;
+	private TcpWriteThread writeThread;
 	
 	public TcpConnection(Socket socket, String threadString){
 		try {
@@ -36,10 +36,12 @@ public class TcpConnection {
 		sendQue.add(p);
 	}
 	
-	public ArrayList<Packet> getRecvList(){
-		ArrayList<Packet> tempList = new ArrayList<Packet>(recvQue);
-		recvQue.clear();
-		return tempList;
+	public ArrayList<Packet> getRecvList(boolean clear){
+		if(clear){
+			ArrayList<Packet> tempList = new ArrayList<Packet>(recvQue);
+			recvQue.clear();
+			return tempList;
+		}else return recvQue;
 	}
 	
 	public boolean readPacket(){
@@ -62,6 +64,20 @@ public class TcpConnection {
 		return false;
 	}
 	
+	public void shutdownConnection(){
+		try {
+			socket.close();
+			br.close();
+			pw.close();
+			readThread.terminate();
+			writeThread.terminate();
+			readThread.join();
+			writeThread.join();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean getIsClosed(){
 		return socket.isClosed();
 	}
@@ -72,14 +88,6 @@ public class TcpConnection {
 	
 	static boolean sendNetworkPacket(TcpConnection tc){
 		return tc.sendPacket();
-	}
-	
-	static Thread getReadThread(TcpConnection tc){
-		return tc.readThread;
-	}
-	
-	static Thread getWriteThread(TcpConnection tc){
-		return tc.writeThread;
 	}
 	
 }

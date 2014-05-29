@@ -3,6 +3,7 @@ package network;
 public class TcpWriteThread extends Thread {
 
 	private TcpConnection tc;
+	private volatile boolean running = true;
 	
 	public TcpWriteThread(TcpConnection tc, String threadString){
 		super(threadString);
@@ -10,7 +11,7 @@ public class TcpWriteThread extends Thread {
 	}
 	
 	public void run(){
-		while(true){
+		while(running){
 			if(!TcpConnection.sendNetworkPacket(tc)){
 				try {
 					sleep(2L);
@@ -19,6 +20,10 @@ public class TcpWriteThread extends Thread {
 				}
 			}
 		}
+	}
+	
+	public void terminate(){
+		running = false;
 	}
 	
 }
