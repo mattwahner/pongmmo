@@ -15,6 +15,7 @@ public class TcpConnection {
 	
 	private ArrayList<Packet> sendQue = new ArrayList<Packet>();
 	private ArrayList<Packet> recvQue = new ArrayList<Packet>();
+	private ArrayList<Packet> outstandingPackets = new ArrayList<Packet>();
 	private TcpReadThread readThread;
 	private TcpWriteThread writeThread;
 	
@@ -36,12 +37,17 @@ public class TcpConnection {
 		sendQue.add(p);
 	}
 	
-	public ArrayList<Packet> getRecvList(boolean clear){
-		if(clear){
-			ArrayList<Packet> tempList = new ArrayList<Packet>(recvQue);
-			recvQue.clear();
-			return tempList;
-		}else return recvQue;
+	public ArrayList<Packet> processPackets(){
+		outstandingPackets.addAll(recvQue);
+		ArrayList<Packet> tempList = new ArrayList<Packet>(recvQue);
+		recvQue.clear();
+		return tempList;
+	}
+	
+	public ArrayList<Packet> getOutstandingPackets(){
+		ArrayList<Packet> tempList = new ArrayList<Packet>(outstandingPackets);
+		outstandingPackets.clear();
+		return tempList;
 	}
 	
 	public boolean readPacket(){

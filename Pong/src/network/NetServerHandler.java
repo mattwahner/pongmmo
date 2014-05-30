@@ -11,7 +11,7 @@ public class NetServerHandler extends NetHandler {
 	}
 	
 	public ArrayList<Packet> getRecvListPackets(){
-		return tc.getRecvList(true);
+		return tc.processPackets();
 	}
 	
 	public void handleTest(String test, int i) {

@@ -55,7 +55,7 @@ public class PongServer {
 	public void redirectPackets(){
 		ArrayList<Packet> outstandingPackets = new ArrayList<Packet>();
 		for(NetworkPlayer p : players){
-			outstandingPackets.addAll(p.getConnection().getRecvList(false));
+			outstandingPackets.addAll(p.getConnection().processPackets());
 		}
 		for(NetworkPlayer player : players){
 			TcpConnection tc = player.getConnection();
