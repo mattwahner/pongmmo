@@ -102,6 +102,15 @@ public class Pong extends Canvas implements Runnable {
 		System.out.println(server.getPlayers().get(0).getConnection().getOutstandingPackets());
 		System.out.println(nch.getRecvListPackets());
 		System.out.println(server.getPlayers().get(0).getConnection().getOutstandingPackets());
+		System.out.println(server.getPlayers().size());
+		nch.shutdownConnection();
+		try {
+			Thread.sleep(3500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(nch.getConnection().getSocket().isClosed());
+		System.out.println(server.getPlayers().size());
 		res = new Resources();
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);

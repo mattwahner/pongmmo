@@ -50,6 +50,7 @@ public abstract class Packet {
 	
 	static{
 		addClassIdMapping(1, Packet01Handshake.class);
+		addClassIdMapping(2, Packet02TestConnection.class);
 	}
 	
 }

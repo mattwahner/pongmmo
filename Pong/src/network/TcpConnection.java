@@ -72,20 +72,27 @@ public class TcpConnection {
 	
 	public void shutdownConnection(){
 		try {
-			socket.close();
 			br.close();
 			pw.close();
+			socket.close();
 			readThread.terminate();
 			writeThread.terminate();
 			readThread.join();
 			writeThread.join();
+			System.out.println("Shutdown complete");
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	//TODO: Get rid of this later
+	public Socket getSocket(){
+		return socket;
+	}
+	
 	public boolean getIsClosed(){
-		return socket.isClosed();
+		new Packet02TestConnection().writePacketData(pw);
+		return pw.checkError();
 	}
 	
 	static boolean readNetworkPacket(TcpConnection tc){

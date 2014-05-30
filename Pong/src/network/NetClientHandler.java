@@ -17,6 +17,16 @@ public class NetClientHandler extends NetHandler {
 		}
 	}
 	
+	public void shutdownConnection(){
+		tc.shutdownConnection();
+		tc = null;
+	}
+	
+	//TODO: Get rid of this later
+	public TcpConnection getConnection(){
+		return tc;
+	}
+	
 	public ArrayList<Packet> getRecvListPackets(){
 		return tc.processPackets();
 	}
