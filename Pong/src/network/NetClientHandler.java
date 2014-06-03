@@ -25,15 +25,11 @@ public class NetClientHandler extends NetHandler {
 	
 	public void shutdownConnection(){
 		tc.shutdownConnection();
+		ncht.terminate();
 	}
 	
-	//TODO: Get rid of this later
-	public TcpConnection getConnection(){
-		return tc;
-	}
-	
-	public ArrayList<Packet> getRecvListPackets(){
-		return tc.getOutstandingPackets();
+	public ArrayList<Packet> getRecvListPackets(int id){
+		return tc.getOutstandingPackets(id);
 	}
 	
 	public void handleTest(String test, int i) {

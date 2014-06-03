@@ -15,7 +15,6 @@ public class TcpConnection {
 	
 	private ArrayList<Packet> sendQue = new ArrayList<Packet>();
 	private ArrayList<Packet> recvQue = new ArrayList<Packet>();
-	private ArrayList<Packet> outstandingPackets = new ArrayList<Packet>();
 	private TcpReadThread readThread;
 	private TcpWriteThread writeThread;
 	
@@ -37,28 +36,15 @@ public class TcpConnection {
 		sendQue.add(p);
 	}
 	
-	public ArrayList<Packet> processPackets(){
-		outstandingPackets.addAll(recvQue);
-		ArrayList<Packet> tempList = new ArrayList<Packet>(recvQue);
-		recvQue.clear();
-		return tempList;
-	}
-	
-	public ArrayList<Packet> getOutstandingPackets(){
-		ArrayList<Packet> tempList = new ArrayList<Packet>(outstandingPackets);
-		outstandingPackets.clear();
-		return tempList;
-	}
-	
 	public ArrayList<Packet> getOutstandingPackets(int id){
 		ArrayList<Packet> tempList = new ArrayList<Packet>();
-		for(Packet p : outstandingPackets){
+		for(Packet p : recvQue){
 			if(p.getPacketId() == id){
 				tempList.add(p);
 			}
 		}
 		for(Packet p : tempList){
-			outstandingPackets.remove(p);
+			recvQue.remove(p);
 		}
 		return tempList;
 	}
@@ -70,7 +56,7 @@ public class TcpConnection {
 				return true;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			;
 		}
 		return false;
 	}
@@ -92,15 +78,9 @@ public class TcpConnection {
 			writeThread.terminate();
 			readThread.join();
 			writeThread.join();
-			System.out.println("Shutdown complete");
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	//TODO: Get rid of this later
-	public Socket getSocket(){
-		return socket;
 	}
 	
 	public boolean getIsClosed(){

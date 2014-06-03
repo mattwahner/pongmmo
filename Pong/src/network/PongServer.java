@@ -11,7 +11,6 @@ public class PongServer {
 	
 	private ServerSocket server;
 	private ServerListenThread pongServerThread;
-	private ServerPacketThread serverPacketThread;
 	
 	private ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 	
@@ -24,8 +23,6 @@ public class PongServer {
 		}
 		pongServerThread = new ServerListenThread(this, port + " listen thread");
 		pongServerThread.start();
-		serverPacketThread = new ServerPacketThread(this, port + " packet thread");
-		serverPacketThread.start();
 	}
 	
 	public ArrayList<NetworkPlayer> getPlayers(){
@@ -45,22 +42,10 @@ public class PongServer {
 	public void checkConnections(){
 		ArrayList<NetworkPlayer> tempList = new ArrayList<NetworkPlayer>(players);
 		for(NetworkPlayer p : tempList){
-			if(p.getConnection().getIsClosed()){
-				System.out.println("Shutting down player");
+			if(!p.getIsConnected()){
 				p.shutdown();
 				players.remove(p);
 			}
-		}
-	}
-	
-	public void redirectPackets(){
-		ArrayList<Packet> outstandingPackets = new ArrayList<Packet>();
-		for(NetworkPlayer p : players){
-			outstandingPackets.addAll(p.getConnection().processPackets());
-		}
-		for(NetworkPlayer player : players){
-			TcpConnection tc = player.getConnection();
-			for(Packet p : outstandingPackets) tc.addToSendQue(p);
 		}
 	}
 	
@@ -69,11 +54,7 @@ public class PongServer {
 	}
 	
 	static void checkNetworkConnections(PongServer server){
-		server.acceptConnection();
-	}
-	
-	static void redirectNetworkPackets(PongServer server){
-		server.redirectPackets();
+		server.checkConnections();
 	}
 	
 }

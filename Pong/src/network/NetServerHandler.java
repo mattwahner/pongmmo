@@ -10,8 +10,8 @@ public class NetServerHandler extends NetHandler {
 		this.tc = tc;
 	}
 	
-	public ArrayList<Packet> getRecvListPackets(){
-		return tc.processPackets();
+	public ArrayList<Packet> getRecvListPackets(int id){
+		return tc.getOutstandingPackets(id);
 	}
 	
 	public void handleTest(String test, int i) {
