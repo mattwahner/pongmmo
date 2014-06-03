@@ -50,6 +50,19 @@ public class TcpConnection {
 		return tempList;
 	}
 	
+	public ArrayList<Packet> getOutstandingPackets(int id){
+		ArrayList<Packet> tempList = new ArrayList<Packet>();
+		for(Packet p : outstandingPackets){
+			if(p.getPacketId() == id){
+				tempList.add(p);
+			}
+		}
+		for(Packet p : tempList){
+			outstandingPackets.remove(p);
+		}
+		return tempList;
+	}
+	
 	public boolean readPacket(){
 		try {
 			if(br.ready()){

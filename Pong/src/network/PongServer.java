@@ -46,7 +46,8 @@ public class PongServer {
 		ArrayList<NetworkPlayer> tempList = new ArrayList<NetworkPlayer>(players);
 		for(NetworkPlayer p : tempList){
 			if(p.getConnection().getIsClosed()){
-				p.getConnection().shutdownConnection();
+				System.out.println("Shutting down player");
+				p.shutdown();
 				players.remove(p);
 			}
 		}
