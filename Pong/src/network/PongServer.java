@@ -23,6 +23,7 @@ public class PongServer {
 		}
 		pongServerThread = new ServerListenThread(this, port + " listen thread");
 		pongServerThread.start();
+		System.out.println("Server created with port " + port);
 	}
 	
 	public ArrayList<NetworkPlayer> getPlayers(){
@@ -49,12 +50,23 @@ public class PongServer {
 		}
 	}
 	
+	public void processPackets(){
+		for(NetworkPlayer p : players){
+			ArrayList<Packet> handshakes = p.getConnection().getOutstandingPackets(1);
+			if(handshakes.size() > 0) p.setUsername(((Packet01Handshake) handshakes.get(0)).getUsername());
+		}
+	}
+	
 	static void acceptNetworkConnection(PongServer server){
 		server.acceptConnection();
 	}
 	
 	static void checkNetworkConnections(PongServer server){
 		server.checkConnections();
+	}
+	
+	static void processNetworkPackets(PongServer server){
+		server.processPackets();
 	}
 	
 }

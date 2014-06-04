@@ -14,8 +14,8 @@ public class NetServerHandler extends NetHandler {
 		return tc.getOutstandingPackets(id);
 	}
 	
-	public void handleTest(String test, int i) {
-		tc.addToSendQue(new Packet01Handshake(test, i));
+	public void handleLogin(String username) {
+		tc.addToSendQue(new Packet01Handshake(username));
 	}
 	
 }

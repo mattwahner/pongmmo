@@ -32,8 +32,12 @@ public class NetClientHandler extends NetHandler {
 		return tc.getOutstandingPackets(id);
 	}
 	
-	public void handleTest(String test, int i) {
-		tc.addToSendQue(new Packet01Handshake(test, i));
+	public void handleLogin(String username) {
+		tc.addToSendQue(new Packet01Handshake(username));
+	}
+	
+	public boolean isConnected(){
+		return tc.isConnected();
 	}
 	
 	public void checkConnection(){

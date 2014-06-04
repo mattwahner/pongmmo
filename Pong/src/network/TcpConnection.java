@@ -83,9 +83,8 @@ public class TcpConnection {
 		}
 	}
 	
-	public boolean getIsClosed(){
-		new Packet02TestConnection().writePacketData(pw);
-		return pw.checkError();
+	public boolean isConnected(){
+		return socket.isConnected();
 	}
 	
 	static boolean readNetworkPacket(TcpConnection tc){
