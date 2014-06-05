@@ -1,21 +1,21 @@
 package network;
 
-public class NetClientHandlerThread extends Thread {
+public class ClientHandlerPacketThread extends Thread {
 
-	private NetClientHandler nch;
-	
 	private volatile boolean running = true;
 	
-	public NetClientHandlerThread(NetClientHandler nch, String threadString){
+	private NetClientHandler nch;
+	
+	public ClientHandlerPacketThread(NetClientHandler nch, String threadString){
 		super(threadString);
 		this.nch = nch;
 	}
 	
 	public void run(){
 		while(running){
-			NetClientHandler.checkNetworkConnection(nch);
+			NetClientHandler.processNetPackets(nch);
 			try {
-				sleep(100L);
+				sleep(2L);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

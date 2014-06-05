@@ -14,8 +14,20 @@ public class NetServerHandler extends NetHandler {
 		return tc.getOutstandingPackets(id);
 	}
 	
-	public void handleLogin(String username) {
-		tc.addToSendQue(new Packet01Handshake(username));
+	public void handleLogin(String username, String team) {
+		tc.addToSendQue(new Packet01Handshake(username, team));
+	}
+	
+	public void handleStart(){
+		tc.addToSendQue(new Packet03Start());
+	}
+	
+	public void handlePlayerMove(String team, int dir){
+		tc.addToSendQue(new Packet04PlayerMove(team, dir));
+	}
+	
+	public void handlePlayerPos(String team, int pos){
+		tc.addToSendQue(new Packet05PlayerPos(team, pos));
 	}
 	
 }

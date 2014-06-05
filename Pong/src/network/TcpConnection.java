@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TcpConnection {
 	
@@ -13,8 +15,8 @@ public class TcpConnection {
 	private PrintWriter pw;
 	private BufferedReader br;
 	
-	private ArrayList<Packet> sendQue = new ArrayList<Packet>();
-	private ArrayList<Packet> recvQue = new ArrayList<Packet>();
+	private List<Packet> sendQue = Collections.synchronizedList(new ArrayList<Packet>());
+	private List<Packet> recvQue = Collections.synchronizedList(new ArrayList<Packet>());
 	private TcpReadThread readThread;
 	private TcpWriteThread writeThread;
 	
@@ -38,13 +40,15 @@ public class TcpConnection {
 	
 	public ArrayList<Packet> getOutstandingPackets(int id){
 		ArrayList<Packet> tempList = new ArrayList<Packet>();
-		for(Packet p : recvQue){
-			if(p.getPacketId() == id){
-				tempList.add(p);
+		synchronized (recvQue){
+			for(Packet p : recvQue){
+				if(p.getPacketId() == id){
+					tempList.add(p);
+				}
 			}
-		}
-		for(Packet p : tempList){
-			recvQue.remove(p);
+			for(Packet p : tempList){
+				recvQue.remove(p);
+			}
 		}
 		return tempList;
 	}
@@ -52,7 +56,9 @@ public class TcpConnection {
 	public boolean readPacket(){
 		try {
 			if(br.ready()){
-				recvQue.add(Packet.readPacket(br));
+				synchronized (recvQue){
+					recvQue.add(Packet.readPacket(br));
+				}
 				return true;
 			}
 		} catch (IOException e) {
@@ -62,9 +68,11 @@ public class TcpConnection {
 	}
 	
 	public boolean sendPacket(){
-		if(sendQue.size() > 0){
-			sendQue.remove(0).writePacketData(pw);
-			return true;
+		synchronized (sendQue){
+			if(sendQue.size() > 0){
+				sendQue.remove(0).writePacketData(pw);
+				return true;
+			}
 		}
 		return false;
 	}

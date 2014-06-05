@@ -69,14 +69,23 @@ public class MainScreen implements Screen {
 		case MULTI_CLIENT_STATE:
 			if(!onCreate){
 				nch = new NetClientHandler(JOptionPane.showInputDialog("Enter an address: "), Integer.parseInt(JOptionPane.showInputDialog("Enter a port: ")));
-				nch.handleLogin(JOptionPane.showInputDialog("Enter username: "));
+				nch.handleLogin(JOptionPane.showInputDialog("Enter username: "), "None");
 				onCreate = true;
 			}
+			if(nch.isStarted()) pong.newNetGame(nch, server);
 			break;
 		case MULTI_SERVER_STATE:
 			if(!onCreate){
-				server = new PongServer(Integer.parseInt(JOptionPane.showInputDialog("Enter a port: ")));
+				int port = Integer.parseInt(JOptionPane.showInputDialog("Enter a port: ")); 
+				server = new PongServer(port);
+				nch = new NetClientHandler("127.0.0.1", port);
+				nch.handleLogin(JOptionPane.showInputDialog("Enter username: "), "None");
 				onCreate = true;
+			}
+			if(keyHandler.space.getPressed()){
+				server.startGame();
+				pong.newNetGame(nch, server);
+				keyHandler.releaseKeys();
 			}
 			break;
 		case EXIT_STATE:
@@ -114,10 +123,10 @@ public class MainScreen implements Screen {
 		case MULTI_SERVER_STATE:
 			if(server != null){
 				g.setColor(Color.WHITE);
-				g.drawString("Players: ", 10, 10);
-				g.drawString("Num of players: " + server.getPlayers().size(), 10, 20);
+				g.drawString("Num of players: " + server.getPlayers().size(), 10, 10);
+				g.drawString("Press space to start!", 200, 10);
 				for(int i = 0; i < server.getPlayers().size(); i++){
-					g.drawString(server.getPlayers().get(i).getUsername(), 10, 30 + (i * 10));
+					g.drawString(server.getPlayers().get(i).getUsername() + "      Team: " + server.getPlayers().get(i).getTeam(), 10, 20 + (i * 10));
 				}
 			}
 			break;

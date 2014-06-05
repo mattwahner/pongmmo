@@ -9,12 +9,16 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import network.NetClientHandler;
+import network.PongServer;
+
 public class Pong extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 8484419508934349888L;
+	private static JFrame frame;
 	private static final String NAME = "Pong";
-	private static final int WIDTH = 1024;
-	private static final int HEIGHT = 768;
+	public static final int WIDTH = 1024;
+	public static final int HEIGHT = 768;
 	
 	private KeyHandler keyHandler;
 	
@@ -63,7 +67,7 @@ public class Pong extends Canvas implements Runnable {
 			frameCount++;
 			if(timeMillis + 1000 < System.currentTimeMillis()){
 				timeMillis = System.currentTimeMillis();
-				System.out.println("FPS: " + frameCount + " \tTicks: " + tickCount);
+				frame.setTitle(NAME + " FPS: " + frameCount + " Ticks: " + tickCount);
 				frameCount = 0;
 				tickCount = 0;
 			}
@@ -77,6 +81,12 @@ public class Pong extends Canvas implements Runnable {
 	
 	public void newGame(){
 		level = new Level(this, keyHandler);
+		level.init();
+		screen = null;
+	}
+	
+	public void newNetGame(NetClientHandler nch, PongServer server){
+		level = new MPLevel(this, keyHandler, nch);
 		level.init();
 		screen = null;
 	}
@@ -122,7 +132,7 @@ public class Pong extends Canvas implements Runnable {
 		pong.setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		pong.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.setTitle(NAME);
 		frame.setLayout(new BorderLayout());
 		frame.add(pong);

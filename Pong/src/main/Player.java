@@ -7,6 +7,9 @@ import java.awt.Rectangle;
 
 public class Player implements Entity {
 
+	public static final int SPEED = 10;
+	public static final int HEIGHT = 100;
+	
 	private Pong pong;
 	private Color color;
 	private KeyHandler.Key upButton;
@@ -16,9 +19,7 @@ public class Player implements Entity {
 	private Point centerPoint;
 	private int x;
 	private int y;
-	private int height;
 	private int width;
-	private int speed;
 	
 	public Player(Pong pong, Color color, KeyHandler.Key upButton, KeyHandler.Key downButton, int startX){
 		this.pong = pong;
@@ -29,32 +30,34 @@ public class Player implements Entity {
 	}
 	
 	public void init() {
-		height = 100;
 		width = 20;
-		speed = 10;
-		y = (pong.getHeight() / 2) - (height / 2);
-		hitbox = new Rectangle(x, y, width, height);
-		centerPoint = new Point(x + (width / 2), y + (height / 2));
+		y = (pong.getHeight() / 2) - (HEIGHT / 2);
+		hitbox = new Rectangle(x, y, width, HEIGHT);
+		centerPoint = new Point(x + (width / 2), y + (HEIGHT / 2));
 	}
 
 	public void tick() {
 		if(upButton.getPressed() && y > 0){
-			y -= speed;
+			y -= SPEED;
 		}
-		else if(downButton.getPressed() && (y + height) < pong.getHeight()){
-			y += speed;
+		else if(downButton.getPressed() && (y + HEIGHT) < pong.getHeight()){
+			y += SPEED;
 		}
-		hitbox.setRect(x, y, width, height);
-		centerPoint.setLocation(x + (width / 2), y + (height / 2));
+		centerHitboxes();
+	}
+	
+	public void centerHitboxes(){
+		hitbox.setRect(x, y, width, HEIGHT);
+		centerPoint.setLocation(x + (width / 2), y + (HEIGHT / 2));
 	}
 
 	public void render(Graphics g) {
 		g.setColor(color);
-		g.fillRect(x, y, width, height);
+		g.fillRect(x, y, width, HEIGHT);
 	}
 	
 	public int getHeight(){
-		return height;
+		return HEIGHT;
 	}
 	
 	public boolean isIntersecting(Rectangle r){
@@ -63,6 +66,18 @@ public class Player implements Entity {
 	
 	public Point getCenterPoint(){
 		return centerPoint;
+	}
+	
+	public KeyHandler.Key getUpButton(){
+		return upButton;
+	}
+	
+	public KeyHandler.Key getDownButton(){
+		return downButton;
+	}
+	
+	public void setY(int y){
+		this.y = y;
 	}
 
 }

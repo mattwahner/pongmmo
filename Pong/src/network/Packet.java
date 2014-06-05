@@ -51,6 +51,9 @@ public abstract class Packet {
 	static{
 		addClassIdMapping(1, Packet01Handshake.class);
 		addClassIdMapping(2, Packet02TestConnection.class);
+		addClassIdMapping(3, Packet03Start.class);
+		addClassIdMapping(4, Packet04PlayerMove.class);
+		addClassIdMapping(5, Packet05PlayerPos.class);
 	}
 	
 }

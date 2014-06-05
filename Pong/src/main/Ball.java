@@ -46,7 +46,7 @@ public class Ball implements Entity {
 		if(playerBounceCD <= 0){
 			ArrayList<Entity> entities = level.getEntities();
 			for(Entity e : entities){
-				if(e instanceof Player){
+				if(e instanceof Player || e instanceof MPPlayer){
 					if(((Player) e).isIntersecting(hitbox)){
 						Point pCenterPoint = ((Player) e).getCenterPoint();
 						int pHeight = ((Player) e).getHeight();

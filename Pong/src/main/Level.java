@@ -37,8 +37,20 @@ public class Level {
 		}
 	}
 	
+	public void setEntities(ArrayList<Entity> entities){
+		this.entities = entities;
+	}
+	
 	public ArrayList<Entity> getEntities(){
 		return entities;
+	}
+	
+	public Pong getPong() {
+		return pong;
+	}
+	
+	public KeyHandler getKeyHandler(){
+		return keyHandler;
 	}
 	
 }
