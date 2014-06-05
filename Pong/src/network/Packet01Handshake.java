@@ -4,36 +4,36 @@ import java.io.PrintWriter;
 
 public class Packet01Handshake extends Packet {
 
-	private String test;
-	private int test2;
+	private String username;
+	private String team;
 	
 	public Packet01Handshake(){
-		test = "test";
-		test2 = 123;
+		username = "Anonymous";
+		team = "None";
 	}
 	
-	public Packet01Handshake(String test, int test2){
-		this.test = test;
-		this.test2 = test2;
+	public Packet01Handshake(String username, String team){
+		this.username = username;
+		this.team = team;
 	}
 	
 	public void writePacketData(PrintWriter pw) {
-		String data = 1 + "~" + test + "~" + test2;
+		String data = this.getPacketId() + "~" + username + "~" + team;
 		pw.println(data);
 	}
 
 	public void readPacketData(String s) {
 		String[] dataSplit = s.split("~");
-		test = dataSplit[1];
-		test2 = Integer.parseInt(dataSplit[2]);
+		username = dataSplit[1];
+		team = dataSplit[2];
 	}
 	
-	public String getTest(){
-		return test;
+	public String getUsername(){
+		return username;
 	}
 	
-	public int getTest2(){
-		return test2;
+	public String getTeam(){
+		return team;
 	}
 	
 	public String toString(){

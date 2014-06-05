@@ -15,9 +15,10 @@ import network.PongServer;
 public class Pong extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 8484419508934349888L;
+	private static JFrame frame;
 	private static final String NAME = "Pong";
-	private static final int WIDTH = 1024;
-	private static final int HEIGHT = 768;
+	public static final int WIDTH = 1024;
+	public static final int HEIGHT = 768;
 	
 	private KeyHandler keyHandler;
 	
@@ -66,7 +67,7 @@ public class Pong extends Canvas implements Runnable {
 			frameCount++;
 			if(timeMillis + 1000 < System.currentTimeMillis()){
 				timeMillis = System.currentTimeMillis();
-				System.out.println("FPS: " + frameCount + " \tTicks: " + tickCount);
+				frame.setTitle(NAME + " FPS: " + frameCount + " Ticks: " + tickCount);
 				frameCount = 0;
 				tickCount = 0;
 			}
@@ -84,33 +85,13 @@ public class Pong extends Canvas implements Runnable {
 		screen = null;
 	}
 	
+	public void newNetGame(NetClientHandler nch, PongServer server){
+		level = new MPLevel(this, keyHandler, nch);
+		level.init();
+		screen = null;
+	}
+	
 	private void init(){
-		PongServer server = new PongServer(7777);
-		NetClientHandler nch = new NetClientHandler("127.0.0.1", 7777);
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		nch.handleTest("test", 123);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println(nch.getRecvListPackets());
-		System.out.println(server.getPlayers().get(0).getConnection().getOutstandingPackets());
-		System.out.println(nch.getRecvListPackets());
-		System.out.println(server.getPlayers().get(0).getConnection().getOutstandingPackets());
-		System.out.println(server.getPlayers().size());
-		nch.shutdownConnection();
-		try {
-			Thread.sleep(3500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println(nch.getConnection().getSocket().isClosed());
-		System.out.println(server.getPlayers().size());
 		res = new Resources();
 		keyHandler = new KeyHandler();
 		this.addKeyListener(keyHandler);
@@ -151,7 +132,7 @@ public class Pong extends Canvas implements Runnable {
 		pong.setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		pong.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.setTitle(NAME);
 		frame.setLayout(new BorderLayout());
 		frame.add(pong);

@@ -1,19 +1,19 @@
 package network;
 
-public class ServerPacketThread extends Thread {
+public class ClientHandlerPacketThread extends Thread {
 
 	private volatile boolean running = true;
 	
-	private PongServer server;
+	private NetClientHandler nch;
 	
-	public ServerPacketThread(PongServer server, String threadString){
+	public ClientHandlerPacketThread(NetClientHandler nch, String threadString){
 		super(threadString);
-		this.server = server;
+		this.nch = nch;
 	}
 	
 	public void run(){
 		while(running){
-			PongServer.processNetworkPackets(server);
+			NetClientHandler.processNetPackets(nch);
 			try {
 				sleep(2L);
 			} catch (InterruptedException e) {

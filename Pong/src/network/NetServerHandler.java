@@ -10,12 +10,24 @@ public class NetServerHandler extends NetHandler {
 		this.tc = tc;
 	}
 	
-	public ArrayList<Packet> getRecvListPackets(){
-		return tc.processPackets();
+	public ArrayList<Packet> getRecvListPackets(int id){
+		return tc.getOutstandingPackets(id);
 	}
 	
-	public void handleTest(String test, int i) {
-		tc.addToSendQue(new Packet01Handshake(test, i));
+	public void handleLogin(String username, String team) {
+		tc.addToSendQue(new Packet01Handshake(username, team));
+	}
+	
+	public void handleStart(){
+		tc.addToSendQue(new Packet03Start());
+	}
+	
+	public void handlePlayerMove(String team, int dir){
+		tc.addToSendQue(new Packet04PlayerMove(team, dir));
+	}
+	
+	public void handlePlayerPos(String team, int pos){
+		tc.addToSendQue(new Packet05PlayerPos(team, pos));
 	}
 	
 }

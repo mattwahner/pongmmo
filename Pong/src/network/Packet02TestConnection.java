@@ -9,7 +9,7 @@ public class Packet02TestConnection extends Packet {
 	public void writePacketData(){}
 	
 	public void writePacketData(PrintWriter pw) {
-		pw.println("2~test");
+		pw.println(this.getPacketId() + "~test");
 	}
 
 	public void readPacketData(String s) {

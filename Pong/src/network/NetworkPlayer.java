@@ -8,6 +8,8 @@ public class NetworkPlayer {
 	
 	private static int playerNum = 0;
 	
+	private String username = "Anonymous";
+	private String team = "None";
 	private boolean isConnected;
 	private long connectionTime;
 	
@@ -31,6 +33,22 @@ public class NetworkPlayer {
 		if(tc.getOutstandingPackets(2).size() > 0) connectionTime = System.currentTimeMillis();
 		if(connectionTime + 1000 < System.currentTimeMillis()) isConnected = false;
 		return isConnected;
+	}
+	
+	public void setUsername(String username){
+		this.username = username;
+	}
+	
+	public String getUsername(){
+		return username;
+	}
+	
+	public void setTeam(String team){
+		this.team = team;
+	}
+	
+	public String getTeam(){
+		return team;
 	}
 	
 	public TcpConnection getConnection(){
